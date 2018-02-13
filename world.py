@@ -10,9 +10,10 @@ class MapTile:
 
 class StartTile(MapTile):
 	def intro_text(self):
-		return """You find yourself in a cave with a flickering torch on the wall.
-		You can make out four paths, each equally as dark and foreboding.
-		"""
+		return "(you hear a distant voice) " \
+	"Hello...and welcome to DungeonEscape..." \
+	"You are trapped in a dungeon...escape and your memories" \
+	" will be returned."
 
 
 class BoringTile(MapTile):

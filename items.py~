@@ -2,7 +2,7 @@ class Items:
 	def __str__(self):
 		return self.name
 class Gold(Items):
-	def __init__(self):
+	def __str__(self):
 		self.name = "Gold"
 		self.description = "A valuable resource to be used in the shop"
 		self.amount = 5

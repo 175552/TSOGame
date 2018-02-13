@@ -29,8 +29,7 @@ def play():
 	world = World()
 	
 	print_wrap(world.tile_at(player.x,player.y).intro_text())
-	print("You have been equipped with: ")
-	player.print_inventory()
+	print("You have been equipped with: " + player.print_inventory())
 	
 	while True:
 		print("")							# Print a blank line for spacing purposes.
