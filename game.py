@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from random import randint 	# Used to generate random integers.
 
 from textwrap import fill	# Gives us a tool for formatting text in a much prettier fashion.
@@ -136,7 +136,7 @@ def print_wrap(text):
 
 ### Play the game.
 play()
-=======
+
 class Weapon: 
 	def __str__(self):
 		return self.name
@@ -159,4 +159,4 @@ print("(you hear a distant voice) " \
 	"You are trapped in a dungeon...escape and your memories" \
 	" will be returned. You have been equipped " \
 	" with your" + playerWeapon.name)
->>>>>>> b25f10105d9aa2d2397111fc94c6fb366bf62f29
+

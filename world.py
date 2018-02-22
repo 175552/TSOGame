@@ -1,3 +1,4 @@
+import random
 
 class MapTile:
 	def __init__(self, x=0, y=0):
@@ -13,12 +14,16 @@ class StartTile(MapTile):
 		return "(you hear a distant voice) " \
 	"Hello...and welcome to DungeonEscape..." \
 	"You are trapped in a dungeon...escape and your memories" \
-	" will be returned."
+	" will be returned. Type in commands to move around the map." \
+	"This tile is a safe tile. When you enter a room you must first" \
+	"Clear the room of all monsters. Some rooms may have chests, so look carerfully!"
 
 
-class BoringTile(MapTile):
+class MonsterTile(MapTile):
 	def intro_text(self):
-		return """This is a very boring part of the cave."""
+		goblinNumber = random.randint(1, 3)
+		description = "You enter an easy room. You look around and see " + str(goblinNumber) + " goblins"
+		return description
 		
 class SecretTile(MapTile):
 	def intro_text(self):
@@ -39,9 +44,9 @@ class VictoryTile(MapTile):
 class World:									# I choose to define the world as a class. This makes it more straightforward to import into the game.
 	map = [
 		[None, 			VictoryTile(), 			None, 				None, 				None],
-		[None, 			BoringTile(), 			None, 				DeathTile(), 			None],
-		[BoringTile(), 		StartTile(), 			BoringTile(), 			SecretTile(), 			None],
-		[None, 			BoringTile(), 			None, 				None, 				None],
+		[None, 			MonsterTile(), 			None, 				DeathTile(), 			None],
+		[MonsterTile(), 		StartTile(), 			MonsterTile(), 			SecretTile(), 			None],
+		[None, 			MonsterTile(), 			None, 				None, 				None],
 		[None,			DeathTile(),			None,				None,				None]
 	]
 	
