@@ -89,8 +89,7 @@ class MapTile:
 
 
 class StartTile(MapTile):
-	description = """You find yourself in a cave with a flickering torch on the wall.
-		You can make out a path to the east and to the west, each equally as dark and foreboding.
+	description = """You wake up in a cave, and can't seem to remember how you got there. 
 		"""
 
 class Corridor(MapTile):
@@ -177,18 +176,19 @@ class VictoryTile(MapTile):
 		It grows as you get closer! It's sunlight!	
 		Victory is yours!
 		"""
-		
+normalChest = items.Old_Chest()
+normalChest.contents = [items.Dagger(), items.Gold_Coins()]
 class World:									# I choose to define the world as a class. This makes it more straightforward to import into the game.
 	map = [
-		[Corridor(),						Corridor(),   					Corridor(),	None, 		None, 		Corridor(), 	Corridor(), 						None],
-		[Corridor(),						None,	 					VictoryTile(), 	None, 		None, 		None, 		Corridor(), 						Corridor()],
-		[Corridor(),						None,						None, 		None, 		None, 		None, 		None, 							Corridor()],
-		[Corridor(),						Corridor(),					Corridor(),	Corridor(), 	Corridor(), 	Corridor(), 	Corridor(), 						Corridor()],
-		[None, 							None, 						None, 		None, 		None, 		None, 		None, 							Corridor(barriers = [barriers.LockedDoor('n')])],
-		[Nook(), 						None, 						None, 		None, 		Corridor(), 	Corridor(), 	Corridor(), 						Corridor()],
-		[Corridor(), 						None, 						None, 		None, 		Corridor(), 	None, 		None, 							None],
-		[Corridor(), 						Corridor(), 					Corridor(), 	Corridor(), 	StartTile(), 	Corridor(), 	Corridor(barriers = [barriers.WoodenDoor('e')]), 	Corridor()]
-]
+		[Corridor(),						Corridor(),   				Corridor(),		None, 			None, 			Corridor(), 	Corridor(), 										None],
+		[Corridor(),						None,	 					VictoryTile(), 	None, 			None, 			None, 			Corridor(), 										Corridor()],
+		[Corridor(),						None,						None, 			None, 			None, 			None, 			None, 												Corridor()],
+		[Corridor(),						Corridor(),					Corridor(),		Corridor(), 	Corridor(), 	Corridor(), 	Corridor(), 										Corridor()],
+		[None, 								None, 						None, 			None, 			None, 			None, 			None, 												Corridor(barriers = [barriers.LockedDoor('n')])],
+		[Nook(), 							None, 						None, 			None, 			Corridor(), 	Corridor(), 	Corridor(), 										Corridor()],
+		[Corridor(), 						None, 						None, 			None, 			Corridor(),		None, 			None, 												None],
+		[Corridor(), 						Corridor(), 				Corridor(), 	Corridor(), 	StartTile(),	Corridor(), 	Corridor(barriers = [barriers.WoodenDoor('e')]), 	Corridor(items = [normalChest])]
+	]
 
 	def __init__(self):
 		for i in range(len(self.map)):			# We want to set the x, y coordinates for each tile so that it "knows" where it is in the map.

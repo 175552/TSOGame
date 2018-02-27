@@ -25,7 +25,8 @@ class MonsterTile(MapTile):
 		description = "You enter an easy room. You look around and see " + str(goblinNumber) + " goblins"
 		return description
 		
-class SecretTile(MapTile):
+class WeaponTile
+(MapTile):
 	def intro_text(self):
 		return """You've entered a secret room. Don't tell anyone!"""
 		

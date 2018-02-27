@@ -228,7 +228,7 @@ class Old_Chest(Container):
 								self.contents.pop(index)
 								return [True, pickup_text, inventory]
 							else:
-								return [True, "The %s is too heavy to pick up." % self.contents[index].name, inventory]
+								return [True, "You can't take the %s. Error: Not an Item" % self.contents[index].name, inventory]
 			if(verb == 'check'):
 				if(not self.closed):
 					for index in range(len(self.contents)):

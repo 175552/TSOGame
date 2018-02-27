@@ -7,7 +7,7 @@ import parse
 
 debug_mode = True	# Use this to toggle verbose mode on the text parser.
 
-game_name = "Escape from Cave Terror, v3"
+game_name = "Dungeon Escape"
 
 help_text = "To interact with this game world, you will use a basic text-based interface. \
 Try single-word commands like 'inventory' or 'west' (or their counterpart abbreviations, 'i' or 'w', respectively \
@@ -16,16 +16,15 @@ or in some cases, [VERB][NOUN][OBJECT] (e.g. 'attack thief with nasty knife').\
 The game will ignore the articles 'a', 'an', and 'the' (e.g. 'open the door' is the same as 'open door.').\n\n\
 To toggle output from the game parser, type 'debug'. To exit the game at any time, type 'exit' or 'quit'."
 
-victory_text = ["Thank you for playing!", \
-				"I hope you enjoyed this game engine demo.", \
-				"I look forward to seeing the games you create using this as an example!"]
+victory_text = ["Thanks for playing!", \
+				"Made by Joseph and Sai."]
 
 player = Player()
 world = World()
-	
+
 def play():	
 	print_welcome_text()
-	
+
 	print_wrap(world.tile_at(player.x,player.y).intro_text())
 	
 	while True:
@@ -69,7 +68,11 @@ def handle_input(verb, noun1, noun2):
 		else:
 			return "I'm not sure what you need help with. Try using 'help' on its own."
 
-			
+	if(verb == 'equip' or verb == 'set'):
+		inInventory = False;
+		if(not noun2):
+			player.set_weapon(noun1)
+
 	elif(verb == 'exit'):
 		if(not noun1):
 			exit()
@@ -149,8 +152,6 @@ def handle_input(verb, noun1, noun2):
 		else:
 			return "I think you are trying to look at something, but your phrasing is too complicated. Please try again."
 
-
-			
 	elif(verb):
 		[status, description] = player.handle_input(verb, noun1, noun2)
 		if(status):

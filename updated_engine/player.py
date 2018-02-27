@@ -2,11 +2,12 @@ import items
 
 class Player:
 	def __init__(self):
-		self.inventory = [items.Rock(),	items.Dagger(),	items.Crusty_Bread()]
+		self.inventory = [items.Rock(), items.Dagger(), items.Rusty_Sword()]
 		self.gold = 5
 		self.hp = 100
 		self.x = 4
 		self.y = 7
+		self.weapon = items.Rock()
 
 	def print_inventory(self):
 		print("Inventory:")
@@ -14,8 +15,9 @@ class Player:
 			print('* ' + str(item).title())
 			best_weapon = self.most_powerful_weapon()
 		print("* %i Gold" % self.gold)
+		print("Your current weapon is " + str(self.weapon))
 		print("Your best weapon is your {}".format(best_weapon))
-	
+		
 	def most_powerful_weapon(self):
 		max_damage = 0
 		best_weapon = None
@@ -27,7 +29,29 @@ class Player:
 			except AttributeError:
 				pass
 		return best_weapon
-		
+
+	def check_weapon(self, weaponName, equipWeapon):
+		checkInv = ''
+		inInventory = False
+		for item in self.inventory:
+			checkInv = str(item).title()
+			if(weaponName == checkInv):
+				inInventory = True
+				if(inInventory):
+					self.weapon = equipWeapon
+					print("You have equipped " + str(self.weapon))
+					return
+		print("This weapon is not in your inventory.")
+
+
+	def set_weapon(self, weapon):
+		if(weapon == 'rock'):
+			self.check_weapon('Rock', items.Rock())
+		if(weapon == 'dagger'):
+			self.check_weapon('Dagger', items.Dagger())
+		if(weapon == 'sword'):
+			self.check_weapon('Rusty Sword', items.Rusty_Sword())
+
 	def move(self, dx, dy):
 		self.x += dx
 		self.y += dy
