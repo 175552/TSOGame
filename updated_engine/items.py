@@ -8,12 +8,17 @@ class Item:
 	
 	is_dropped = False	# This is going to store the status of whether this item has been picked up and dropped before.
 	
+	value = 0		# Used to establish value if item is for sale.
+	
 		
-	def __init__(self, description = ""):
+	def __init__(self, description = "", value = 0):
 		if(description):
 			self.intro_description = description
 		else:
 			self.intro_description = self.dropped_description
+		
+		if(self.value == 0):
+			self.value = value
 			
 	def __str__(self):
 		return self.name	
@@ -36,7 +41,12 @@ class Item:
 	def handle_input(self, verb, noun1, noun2, inventory):
 		return [False, None, inventory]
 		
-		
+class Special_Key(Item):
+	name = "special key"
+
+	description = "A special key that looks like it can open locked chests."
+	dropped_description = "A special key is lying on the ground."
+
 class Iron_Key(Item):
 	name = "iron key"
 	
@@ -59,6 +69,7 @@ class Crusty_Bread(Consumable):
 	
 	description = "Just a stale old piece of bread."
 	dropped_description = "A piece of crusty bread is lying on the ground."
+	consume_description = "You eat the crusty piece of bread."
 			
 class Red_Potion(Consumable):
 	name = "red potion"
@@ -66,21 +77,25 @@ class Red_Potion(Consumable):
 	
 	description = "A bottle of mysterious, glowing red potion. For some reason it looks healthy."
 	dropped_description = "A bottle of red potion is glowing on the ground."
+	consume_description = "You drink the glowing red potion."
 	
 	
 	
 
-class Weapon(Item):
+class Weapon(Item):	
 	equip_description = "You should define flavor text for equipping this item in its subclass."
 	attack_descriptions = ["You should define one or more attack descriptions as a list in your subclass.", "This is an example secondary attack description"]
 
 	damage = 0		# Define this appropriately in your subclass.
-		
+	
+	def get_damage(self):
+		return self.damage
+
 	def equip_text(self):
 		return self.equip_description
 			
 	def attack(self):
-		return [self.attack_descriptions[randint(0, len(self.attack_descriptions))], self.damage]		# Return damage and a random attack description from your list.
+		return [self.attack_descriptions[randint(0, len(self.attack_descriptions)-1)], self.damage]		# Return damage and a random attack description from your list.
 		
 
 
@@ -88,7 +103,7 @@ class Rock(Weapon):
 	name = "rock"
 	
 	description = "A fist-sized rock, suitable for bludgeoning."
-	dropped_description = "A fist-sized rock lies on the ground. It looks like it would be suitable for bludgeoning someone."
+	dropped_description = "A fist-sized rock lies on the ground. It looks like it would be suitable for bludgeoning someone... or something. (5 damage)"
 	equip_description = "You arm yourself with the rock."
 	attack_descriptions = ["You swing the rock as hard as you can. Crack!", "You wind up and chuck the rock at your enemy. Oof."]
 	
@@ -98,7 +113,7 @@ class Rock(Weapon):
 class Dagger(Weapon):
 	name = "dagger"
 	
-	description = "A small dagger with some rust. It looks pretty sharp."
+	description = "A small dagger with some rust. It looks pretty sharp. (10 damage)"
 	dropped_description = "A dagger lies on the ground. It looks somewhat more dangerous than a rock."
 	equip_description = "You take the dagger in your hand."
 	attack_descriptions = ["You lunge forward with the dagger.", "You stab wildly with the dagger.", "You swing the dagger at your foe."]
@@ -106,13 +121,13 @@ class Dagger(Weapon):
 	damage = 10
 
 
-class Rusty_Sword(Weapon):
-	name = "rusty sword"
+class Flame_Sword(Weapon):
+	name = "flame sword"
 	
-	description = "A rusty sword. Despite its age, it still looks deadly."
-	dropped_description = "There is a rusty sword lying on the ground."
-	equip_description = "You arm yourself with the rusty sword."
-	attack_descriptions = ["You slash with your rusty sword.", "Your rusty sword connects mightily with your enemy.", "You swing the rusty sword with all your might."]
+	description = "A flame sword that was forged by the ancient golems. It burns with the light of a thousand souls. (20 damage)"
+	dropped_description = "There is a flame sword lying on the ground."
+	equip_description = "You arm yourself with the flame sword."
+	attack_descriptions = ["You slash with your flame sword.", "Your flame sword connects mightily with your enemy.", "You swing the rusty flame with all your might."]
 	
 	damage = 20
 	
@@ -142,7 +157,7 @@ class Mountain_of_Gold(Gold):
 	
 class Container:
 	name = "Do not create raw Container objects!"
-	
+	locked = False
 	closed_description = "You should define a closed description for containers in their subclass."
 	open_description = "You should define an open description for containers in their subclass."
 	
@@ -195,12 +210,74 @@ class Container:
 	def handle_input(self, verb, noun1, noun2, inventory):			
 		return [False, "", inventory]
 
-		
+class Locked_Chest(Container):
+	name = "locked chest"
+	closed_description = "A battered old chest sits against the far wall, its lid shut tightly."
+	open_description = "A battered old chest sits against the far wall, its lid open wide."
+	locked = True
+
+	def handle_input(self, verb, noun1, noun2, inventory):
+		if(noun1 == self.name):
+			if(verb == 'check'):
+				if(self.locked):
+					return[True, "The chest is locked. You need a special key to open it.", inventory]
+				else:
+					return [True, self.check_text(), inventory]
+			if(verb == 'open'):
+				if(self.locked):
+					return [True, "The chest is locked. You need a special key to open it.", inventory]
+				else:
+					if(self.closed == True):
+						self.closed = False
+						return [True, "You pry the lid of the battered old chest open.", inventory]
+					else:
+						return [True, "The old chest is already wide open.", inventory]
+			if(verb == 'unlock'):
+				if(self.locked):
+					if(noun2 == 'special key'):
+						for index in range(len(inventory)):
+							if(inventory[index].name.lower() == 'special key'):
+								inventory.pop(index)	# Removes the item at this index from the inventory.
+								self.locked = False
+								return [True, "You insert the iron key into the locked chest and twist.The chest unlocks with a click.", inventory]
+						return [True, "You don't seem to have the right key for this chest.", inventory]
+					elif(noun2 == 'key'):
+						return [True, "Be more specific. This chest only takes a specific key.", inventory]
+					else:
+						return [True, "What item do you plan to unlock that chest with?", inventory]
+				else:
+					return [True, "The chest is already unlocked.", inventory]
+			if(verb == 'close'):
+				if(self.closed == False):
+					self.closed = True
+					return [True, "You push down the lid of the old chest and it closes with a bang.", inventory]
+				else:
+					return [True, "The old chest is already closed.", inventory]
+		elif(noun1):
+			if(verb == 'take'):
+				if(not self.closed):
+					for index in range(len(self.contents)):
+						if(self.contents[index].name.lower() == noun1):
+							if(isinstance(self.contents[index], Item)):
+								pickup_text = "You took the %s from the old chest and added it to your inventory." % self.contents[index].name
+								inventory.append(self.contents[index])
+								self.contents.pop(index)
+								return [True, pickup_text, inventory]
+							else:
+								return [True, "The %s is too heavy to pick up." % self.contents[index].name, inventory]
+			if(verb == 'check'):
+				if(not self.closed):
+					for index in range(len(self.contents)):
+						if(self.contents[index].name.lower() == noun1):
+							if(isinstance(self.contents[index], Item)):
+								return [True, self.contents[index].check_text(), inventory]
+		return [False, None, inventory]
 class Old_Chest(Container):
 	name = "old chest"
 	closed_description = "A battered old chest sits against the far wall, its lid shut tightly."
 	open_description = "A battered old chest sits against the far wall, its lid open wide."
-	
+	locked = False
+
 	def handle_input(self, verb, noun1, noun2, inventory):
 		if(noun1 == self.name):
 			if(verb == 'check'):
@@ -228,7 +305,7 @@ class Old_Chest(Container):
 								self.contents.pop(index)
 								return [True, pickup_text, inventory]
 							else:
-								return [True, "You can't take the %s. Error: Not an Item" % self.contents[index].name, inventory]
+								return [True, "The %s is too heavy to pick up." % self.contents[index].name, inventory]
 			if(verb == 'check'):
 				if(not self.closed):
 					for index in range(len(self.contents)):

@@ -89,6 +89,7 @@ class Guardian(Barrier):
 		else:
 			return "You see a guardian guarding the entrace to the west. A sign next to him reads: To pass the guardian you must have found and equipped the flame sword."
 
+		
 class LockedDoor(Barrier):
 	name = 'Locked Door'
 	state = 'closed'	# Used to store the state of doors or hidden passages.
