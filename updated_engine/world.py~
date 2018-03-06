@@ -278,7 +278,7 @@ bossChest1.contents = [items.Flame_Sword(), items.Red_Potion()]
 class World:									# I choose to define the world as a class. This makes it more straightforward to import into the game.
 	map = [
 		[Corridor(),						Corridor(),   				Corridor(),		None, 			None, 			FalseVictory(enemies = [enemies.BossOgre('e')], items = [bossChest1]), 		NearVictory(), 						None],
-		[Corridor(),						None,	 				VictoryTile(), 		None, 			None, 			None, 										Corridor(),						Corridor()],
+		[Corridor(),						None,	 				VictoryTile(), 		None, 			None, 			None, 										Corridor()						Corridor()],
 		[Corridor(),						None,					None, 			None, 			None, 			None, 										None, 							Corridor()],
 		[Corridor(),						Corridor(),				Corridor(),		Corridor(), 		Corridor(), 		Corridor(barriers = [barriers.Guardian('w')]), 					Corridor(),						Corridor()],
 		[None, 							None, 					None, 			None, 			None, 			None, 										None, 							Corridor(barriers = [barriers.LockedDoor('n')])],

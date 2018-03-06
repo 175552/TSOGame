@@ -73,7 +73,7 @@ class Guardian(Barrier):
 				return [True, self.description(), inventory]
 			elif(verb == 'open'):
 				for item in inventory:
-					if(str(item).title() == 'Flame Sword'):
+					if(str(item).title == 'Flame_Sword'):
 						self.passable = True
 						return [True, "The guardian has verified that you have the flame sword. You may pass.", inventory]
 				if(not self.passable):

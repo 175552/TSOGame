@@ -229,9 +229,9 @@ class Locked_Chest(Container):
 				else:
 					if(self.closed == True):
 						self.closed = False
-						return [True, "You pry the lid of the locked chest open.", inventory]
+						return [True, "You pry the lid of the battered old chest open.", inventory]
 					else:
-						return [True, "The locked chest is already wide open.", inventory]
+						return [True, "The old chest is already wide open.", inventory]
 			if(verb == 'unlock'):
 				if(self.locked):
 					if(noun2 == 'special key'):
@@ -239,7 +239,7 @@ class Locked_Chest(Container):
 							if(inventory[index].name.lower() == 'special key'):
 								inventory.pop(index)	# Removes the item at this index from the inventory.
 								self.locked = False
-								return [True, "You insert the iron key into the locked chest and twist. The chest unlocks with a click.", inventory]
+								return [True, "You insert the iron key into the locked chest and twist.The chest unlocks with a click.", inventory]
 						return [True, "You don't seem to have the right key for this chest.", inventory]
 					elif(noun2 == 'key'):
 						return [True, "Be more specific. This chest only takes a specific key.", inventory]
@@ -250,9 +250,9 @@ class Locked_Chest(Container):
 			if(verb == 'close'):
 				if(self.closed == False):
 					self.closed = True
-					return [True, "You push down the lid of the locked chest and it closes with a bang.", inventory]
+					return [True, "You push down the lid of the old chest and it closes with a bang.", inventory]
 				else:
-					return [True, "The locked chest is already closed.", inventory]
+					return [True, "The old chest is already closed.", inventory]
 		elif(noun1):
 			if(verb == 'take'):
 				if(not self.closed):
