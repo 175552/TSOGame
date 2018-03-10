@@ -71,7 +71,7 @@ class Guardian(Barrier):
 		if(noun1 == 'guardian'):
 			if(verb == 'check'):
 				return [True, self.description(), inventory]
-			elif(verb == 'open'):
+			elif(verb == 'open' or verb == 'test'):
 				for item in inventory:
 					if(str(item).title() == 'Flame Sword'):
 						self.passable = True
@@ -79,7 +79,9 @@ class Guardian(Barrier):
 				if(not self.passable):
 					self.timesTried += 1
 					if(self.timesTried == 2):
-						return [True, "The guardian swings a mighty fist at you and connects with your ribs. You hear a cracking sound and black out.", inventory]
+						print("The guardian swings a mighty fist at you and connects with your ribs. You hear a cracking sound and black out.") 
+						print("Game Over.")
+						exit()
 					else:
 						return [True, "The cavern shakes with the guardian's anger. The guardian roars: Test me one more time without the flame sword and die.", inventory]
 		else:
@@ -88,7 +90,7 @@ class Guardian(Barrier):
 		if(self.passable):
 			return "The guardian has verified that you have the flame sword. You may pass."
 		else:
-			return "You see a guardian guarding the entrace to the west. A sign next to him reads: To pass the guardian you must have found and equipped the flame sword."
+			return "You see a guardian guarding the entrace to the west. A sign next to him reads: To pass the guardian you must have found and equipped the flame sword. When you are ready, test the guardian."
 
 		
 class LockedDoor(Barrier):

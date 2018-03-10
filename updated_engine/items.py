@@ -1,5 +1,5 @@
 from random import randint 	# Used to generate random integers.
-
+import random
 class Item:
 	name = "Do not create raw Item objects!"
 	
@@ -33,6 +33,8 @@ class Item:
 		return self.description
 		
 	def drop(self):
+		if(self.name == 'ring of remembrance'):
+			return "This item cannot be dropped"
 		self.is_dropped = True
 		
 	def pick_up(self):
@@ -40,7 +42,22 @@ class Item:
 		
 	def handle_input(self, verb, noun1, noun2, inventory):
 		return [False, None, inventory]
-		
+class Ring_Of_Remembrance(Item):
+	name = "ring of remembrance"
+
+	description = "A plain iron ring with the word Neo, printed on it"
+	isDropped = False
+
+class Slime_Ring(Item):
+	name = "slime ring"
+
+	description = "A mysterious ring that is obtained from defeating the Unholy Slime"
+	dropped_description = "The slime ring is on the ground"
+class Parchment(Item):
+	name = "parchment"
+
+	description = "The Parchment reads: The Final Test..."
+	dropped_description = "A piece of parchment is on the ground."
 class Special_Key(Item):
 	name = "special key"
 
@@ -62,7 +79,6 @@ class Consumable(Item):
 	def consume(self):
 		return [self.consume_description, self.healing_value]
 			
-
 class Crusty_Bread(Consumable):
 	name = "crusty bread"
 	healing_value = 10
@@ -73,9 +89,9 @@ class Crusty_Bread(Consumable):
 			
 class Red_Potion(Consumable):
 	name = "red potion"
-	healing_value = 75
+	healing_value = 30
 	
-	description = "A bottle of mysterious, glowing red potion. For some reason it looks healthy."
+	description = "A bottle of mysterious, glowing red potion. For some reason it looks healthy. Be warned: You can only hold one potion at a time, so drink these quickly!"
 	dropped_description = "A bottle of red potion is glowing on the ground."
 	consume_description = "You drink the glowing red potion."
 	
@@ -85,8 +101,10 @@ class Red_Potion(Consumable):
 class Weapon(Item):	
 	equip_description = "You should define flavor text for equipping this item in its subclass."
 	attack_descriptions = ["You should define one or more attack descriptions as a list in your subclass.", "This is an example secondary attack description"]
-
+	critChance = 0
+	crit = False
 	damage = 0		# Define this appropriately in your subclass.
+	effects = []
 	
 	def get_damage(self):
 		return self.damage
@@ -97,17 +115,29 @@ class Weapon(Item):
 	def attack(self):
 		return [self.attack_descriptions[randint(0, len(self.attack_descriptions)-1)], self.damage]		# Return damage and a random attack description from your list.
 		
+	def critMaybe(self):
+		chance = random.randint(1, 100)
+		if(self.critChance * 100 > chance):
+			self.crit = True
 
+	def get_effects(self):
+		returnText = ""
+		x = 0
+		for x in range(0, len(self.effects)):
+			returnText += str(self.effects[x])
+		return returnText
 
 class Rock(Weapon):
 	name = "rock"
 	
 	description = "A fist-sized rock, suitable for bludgeoning."
-	dropped_description = "A fist-sized rock lies on the ground. It looks like it would be suitable for bludgeoning someone... or something. (5 damage)"
+	dropped_description = "A fist-sized rock lies on the ground. It looks like it could be used as a weapon... or something. (5 damage)"
 	equip_description = "You arm yourself with the rock."
 	attack_descriptions = ["You swing the rock as hard as you can. Crack!", "You wind up and chuck the rock at your enemy. Oof."]
-	
+	critChance = .2
+	crit = False
 	damage = 5
+	effects = None
 
 
 class Dagger(Weapon):
@@ -117,9 +147,22 @@ class Dagger(Weapon):
 	dropped_description = "A dagger lies on the ground. It looks somewhat more dangerous than a rock."
 	equip_description = "You take the dagger in your hand."
 	attack_descriptions = ["You lunge forward with the dagger.", "You stab wildly with the dagger.", "You swing the dagger at your foe."]
-	
+	critChance = .3
+	crit = False
 	damage = 10
+	effects = None
 
+class Poison_Dagger(Weapon):
+	name = "poison dagger"
+	description = "A dagger with the tip glowing with a deadly green glow"
+	equip_description = "You take the poison dagger in your hand."
+	attack_descriptions = ["You jab with the poison dagger.", "You swing the poison dagger.", "You stab the dagger at the enemies body."]
+
+	effects = ["poison"]
+
+	critChance = .35
+	crit = False
+	damage = 11
 
 class Flame_Sword(Weapon):
 	name = "flame sword"
@@ -127,25 +170,27 @@ class Flame_Sword(Weapon):
 	description = "A flame sword that was forged by the ancient golems. It burns with the light of a thousand souls. (20 damage)"
 	dropped_description = "There is a flame sword lying on the ground."
 	equip_description = "You arm yourself with the flame sword."
-	attack_descriptions = ["You slash with your flame sword.", "Your flame sword connects mightily with your enemy.", "You swing the rusty flame with all your might."]
-	
+	attack_descriptions = ["You slash with your flame sword.", "Your flame sword connects mightily with your enemy.", "You swing the flame sword with all your might."]
+	critChance = .25
+	crit = False
 	damage = 20
-	
-	
+
+	effects = ["burn"]
+
 class Gold(Item):
 	value = 0		# Define this appropriately in your subclass.
-		
+	name = "Don't make gold classes"
 	def obtain_text(self):
 		return "%i gold was added to your inventory." % value
 
 		
 class Gold_Coins(Gold):
-	name = "gold coins"
-	value = 5		
-	
+	name = "gold coins"	
 	description = "A small handful of gold coins."
 	dropped_description = "A shiny handful of gold coins is lying on the ground."
-	
+
+	def Gold_Amount(self, amount):
+		self.value = amount	
 
 class Mountain_of_Gold(Gold):
 	name = "mountain of gold"
@@ -203,7 +248,10 @@ class Container:
 			if(len(self.contents) > 0):
 				print("The %s contains:" % self.name)
 				for item in self.contents:
-					print('* ' + str(item).title())
+					if(str(item).title() == 'Gold Coins'):
+						print('* ' + str(item.value) + ' gold coins')
+					else:
+						print('* ' + str(item).title())
 			else:
 				return "The %s is empty." % self.name
 		
@@ -212,8 +260,8 @@ class Container:
 
 class Locked_Chest(Container):
 	name = "locked chest"
-	closed_description = "A battered old chest sits against the far wall, its lid shut tightly."
-	open_description = "A battered old chest sits against the far wall, its lid open wide."
+	closed_description = "A locked chest sits against the far wall, its lid shut tightly."
+	open_description = "A locked chest sits against the far wall, its lid open wide."
 	locked = True
 
 	def handle_input(self, verb, noun1, noun2, inventory):

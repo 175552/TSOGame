@@ -4,10 +4,11 @@ from formattext import *				# Import some important functions for formatting tex
 from player import Player
 from world import World
 import parse
+import random
 
 debug_mode = True	# Use this to toggle verbose mode on the text parser.
 
-game_name = "Escape from Cave Terror, v4"
+game_name = "The Unholy dungeon of the forgotten King!"
 
 help_text = "To interact with this game world, you will use a basic text-based interface. \
 Try single-word commands like 'inventory' or 'west' (or their counterpart abbreviations, 'i' or 'w', respectively \
@@ -162,19 +163,34 @@ def handle_input(verb, noun1, noun2):
 			return "I think you are trying to look at something, but your phrasing is too complicated. Please try again."
 			
 	elif(verb == 'attack'):
+		effectInLoop = False
 		if(not noun2):
 			for enemy in world.tile_at(player.x, player.y).enemies:
 				if(enemy.name.lower() == noun1):
 					if(player.weapon):
 						[attack_text, damage] = player.weapon.attack()
 						damage += player.damage
-						attack_text += " " + enemy.take_damage(damage)
+						player.weapon.critMaybe()
+						for effect in enemy.effects:
+							if(effect == player.calculate_effects()):
+								effectInLoop = True
+								break
+						if(not effectInLoop):
+							enemy.effects.append(player.calculate_effects())
+
+						if(player.weapon.crit):
+							damage = round(damage * random.uniform(1.1, 2))
+							attack_text += " You got a lucky crit! "
+							player.weapon.crit = False
+
+						attack_text += " " +  str(enemy.take_damage(damage))
+
 					else:
 						attack_text = "You try to attack, but you come up empty handed! You should equip something first..."
 					if(enemy.is_alive() and not enemy.agro):
 						attack_text += " The %s retaliated..." % enemy.name
 						attack_text += " " + player.take_damage(enemy.damage)
-					else:
+					elif(enemy.is_alive() == False):
 						player.exp += enemy.exp
 						level_up()
 					return attack_text	
@@ -199,6 +215,8 @@ def handle_input(verb, noun1, noun2):
 
 			
 	elif(verb):
+		if(not noun1):
+			return "I don't know what your trying to perform this action on."
 		[status, description] = player.handle_input(verb, noun1, noun2)
 		if(status):
 			return description
@@ -220,6 +238,7 @@ def print_welcome_text():
 	print()
 	print_center("========================================================")
 	print()
+	print("You wake up in a cave and can't remember anything. Escape from the unholy dungeon and your memories will be returned. Check your inventory to see your stats, and remember to equip a weapon before attacking. Goodbye...")
 	
 def print_victory_text():
 	victory_text = ["Thank you for playing!", \
@@ -256,7 +275,7 @@ def level_up():
 		player.hp += hpIncrease
 		player.max_hp += hpIncrease
 		player.damage += 2
-		print("You have leveled up! You are now level " + str(player.level) + " ! Your hp has increased to " + str(player.hp) + ", and your damage has increased to " + str(player.damage) + "!")
+		print("You have leveled up! You are now level " + str(player.level) + "! Your hp has increased to " + str(player.hp) + ", and your damage has increased to " + str(player.damage) + "!")
 	
 ### Play the game.
 play()

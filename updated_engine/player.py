@@ -2,7 +2,7 @@ import items
 
 class Player:
 	def __init__(self):
-		self.inventory = [items.Iron_Key()]
+		self.inventory = [items.Dagger()]
 						
 		self.weapon = None
 		
@@ -10,33 +10,27 @@ class Player:
 		
 		self.hp = 50
 		self.max_hp = 100
-		self.damage = 50
+		self.damage = 100
 		self.level = 1	
 		self.exp = 0
 		self.expToLevel = 10
-		self.x = 4
-		self.y = 7
+		self.x = 1
+		self.y = 0
 
 	def print_inventory(self):
 		print("Inventory:")
 		best_weapon = None
 		equipped_weapon = False
 		for item in self.inventory:
-			if(str(item).title() == 'Rock'):
-				inventory_text = '* ' + str(item).title() + " (5 damage)"
-			
-			elif(str(item).title() == 'Dagger'):
-				inventory_text = '* ' + str(item).title() + " (10 damage)"
-			
-			elif(str(item).title() == 'Flame Sword'):
-				inventory_text = '* ' + str(item).title() + " (20 damage)"
-			
+			if(isinstance(item, items.Weapon)):
+				inventory_text = '* ' + str(item).title() + " (" + str(item.damage) + " damage)"
+				if(not item.effects == None):
+					inventory_text += "(" + str(item.get_effects()) + ")"
 			else:
 				inventory_text = '* ' + str(item).title()
 
-
 			if(item == self.weapon and not equipped_weapon):
-				inventory_text += ' (equipped)'
+				inventory_text += '(equipped)'
 				equipped_weapon = True
 			print(inventory_text)
 			best_weapon = self.most_powerful_weapon()
@@ -46,10 +40,9 @@ class Player:
 		else:
 			print("You are not carrying any weapons.")			
 		print("You are level " + str(self.level))
-		print("You have " + str(self.hp) + " / " + str(self.max_hp))	
+		print("You have " + str(self.hp) + " / " + str(self.max_hp) + " health")	
 		print("You need " + str(self.expToLevel) + " exp to level up, and you have " + str(self.exp) + " exp")
-
-	
+		
 	def most_powerful_weapon(self):
 		max_damage = 0
 		best_weapon = None
@@ -119,7 +112,14 @@ class Player:
 		else:
 			return True
 			
-	
+	def calculate_effects(self):
+		if(not self.weapon.effects == None):
+			for effect in self.weapon.effects:
+				if(effect == 'poison'):
+					return "poison"
+				else:
+					return "burn"
+
 	def handle_input(self, verb, noun1, noun2):
 		if(verb == 'check'):
 			if(noun1 == 'self' or noun1 == 'health' or noun1 == 'hp'):
@@ -127,7 +127,7 @@ class Player:
 			for item in self.inventory:
 				if item.name.lower() == noun1:
 					return [True, item.check_text()]
-		elif(verb == 'consume'):
+		elif(verb == 'consume' or verb == 'take'):
 			for item in self.inventory:
 				if item.name.lower() == noun1:
 					if(isinstance(item, items.Consumable)):

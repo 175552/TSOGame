@@ -32,13 +32,13 @@ class NPC:
 
 class OldMan(NPC):
 	name = "Old Man"
-	goods = [items.Dagger(), items.Red_Potion(value = 50), items.Crusty_Bread(value = 5)]
-	quantities = [1, -1, 2]		# Set quantity to -1 if you want it to be infinite.
+	goods = [items.Poison_Dagger(), items.Red_Potion(value = 20), items.Parchment(value = 10)]
+	quantities = [1, -1, 1]		# Set quantity to -1 if you want it to be infinite.
 	
-	description = "An old man in a red robe is standing in the middle of the room."
+	description = "An old man cloaked in a robe as dark night meditates in the center of the room"
 	
 	def talk(self):		# Add to this method if you want to be able to talk to your NPC.
-		print("The old man says: I can sell you an item or two, if you are interested:")
+		print("The old man says: I can give you some items - for a price of course.")
 		for item in self.goods:
 			if item.value > 0:
 				if(self.quantities[self.goods.index(item)] > 0):
@@ -63,7 +63,7 @@ class OldMan(NPC):
 	def first_time(self):		# Used to have your NPC do something different the first time you see them.
 		self.first_encounter = False
 		text = self.description
-		text += " As he holds out a dagger, he says: 'It is dangerous to go alone... take this.'"
+		text += " As he twirls a poison dagger, he says: 'Welcome, Neo. Would you like some help? I can give you this poison dagger'"
 		return text
 		
 	def handle_input(self, verb, noun1, noun2, inventory):
