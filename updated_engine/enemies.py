@@ -60,10 +60,11 @@ class Enemy:
 				defeat_text += " It dropped the following items: "
 				for item in self.loot:
 					defeat_text += " *" + str(item) 
+				defeat_text += "."
 			defeat_text += " You gained " + str(self.exp) + " exp"
 			return defeat_text
 		else:
-			return damage_text + "The %s took %d damage from you. It has %s health left." % (self.name, amount, str(self.hp))
+			return damage_text + " The %s took %d damage from you. It has %s health left." % (self.name, amount, str(self.hp))
 			
 	def is_alive(self):
 		return self.hp > 0

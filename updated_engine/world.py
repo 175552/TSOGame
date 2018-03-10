@@ -41,8 +41,7 @@ class MapTile:
 		for npc in self.npcs:
 			text += " " + npc.check_text()
 		for item in self.items:
-			if(isinstance(item, items.Container)):
-				text += " " + str(item.room_text())
+			text += " " + item.room_text()
 
 		return text
 		
@@ -254,7 +253,7 @@ class ExpanseNE(MapTile):
 class Nook(MapTile):
 	enemies = [enemies.DarkWizard()]
 	keyChest = items.Locked_Chest()
-	keyChest.contents = [items.Iron_Key()]
+	keyChest.contents = [items.Iron_Key(), items.Red_Potion()]
 	items = [keyChest]
 	description = """You have entered a shadowy nook of the cave. The only way out is back the way you came."""
 	
@@ -290,14 +289,14 @@ bossChest1 = items.Locked_Chest()
 bossChest1.contents = [items.Flame_Sword(), items.Red_Potion()]
 class World:									# I choose to define the world as a class. This makes it more straightforward to import into the game.
 	map = [
-		[SlimeTile(),						FinalBattle(),   															NearVictory(),	None, 												 None, 												FalseVictory(enemies = [enemies.BossOgre('e')], items = [bossChest1]), 		NearFalseVictory(), 										None],
-		[Corridor(),						None,	 																	VictoryTile(), 	None, 												 None, 												None, 																		Corridor(),											Corridor()],
-		[Corridor(),						None,																		None, 			None, 												 None, 												None, 																		None, 												Corridor()],
-		[Corridor(),						Corridor(enemies = [enemies.FallenSoldier('w'), enemies.DarkKnight('e')]),	Corridor(),		Corridor(enemies = [enemies.FallenBarbarian('w')]),  Corridor(), 										Corridor(barriers = [barriers.Guardian('w')]), 								Corridor(),											Corridor()],
-		[None, 								None, 																		None, 			None, 												 None, 												None, 																		None, 												Corridor(barriers = [barriers.LockedDoor('n')])],
-		[Nook(), 							None, 																		None, 			None, 												 Corridor(enemies = [enemies.FallenSoldier('e')]), 	Corridor(enemies = [enemies.FallenSoldier('e')]), 							Corridor(), 										Corridor(enemies = [enemies.DarkKnight('n')])],
-		[Corridor(), 						None, 																		None, 			None, 												 Corridor(),										None, 																		None, 												None],
-		[Corridor(npcs = [npcs.OldMan()]), 	Corridor(enemies = [enemies.FallenBarbarian('w')]), 						Corridor(), 	Corridor(enemies = [enemies.FallenSoldier('w')]), 	 StartTile(),										Corridor(), 																Corridor(barriers = [barriers.WoodenDoor('e')]), 	Corridor(items = [normalChest])]
+		[SlimeTile(),						FinalBattle(),   								NearVictory(),	None, 							None, 							FalseVictory(enemies = [enemies.BossOgre('e')], items = [bossChest1]), 		NearFalseVictory(), 					None],
+		[Corridor(),						None,	 									VictoryTile(), 	None, 							None, 							None, 										Corridor(),						Corridor()],
+		[Corridor(),						None,										None, 		None, 							None, 							None, 										None, 							Corridor()],
+		[Corridor(enemies = [enemies.FallenBarbarian('n')]),	Corridor(enemies = [enemies.FallenSoldier('w'), enemies.DarkKnight('e')]),	Corridor(),	Corridor(enemies = [enemies.FallenBarbarian('w')]), 	Corridor(), 						Corridor(barriers = [barriers.Guardian('w')]), 					Corridor(),						Corridor()],
+		[None, 							None, 										None, 		None, 							None, 							None, 										None, 							Corridor(barriers = [barriers.LockedDoor('n')])],
+		[Nook(), 						None, 										None, 		None, 							Corridor(enemies = [enemies.FallenSoldier('e')]), 	Corridor(enemies = [enemies.FallenSoldier('e')]), 				Corridor(), 						Corridor(enemies = [enemies.DarkKnight('n')])],
+		[Corridor(), 						None, 										None, 		None, 							Corridor(),						None, 										None, 							None],
+		[Corridor(npcs = [npcs.OldMan()]), 			Corridor(enemies = [enemies.FallenBarbarian('w')]), 				Corridor(), 	Corridor(enemies = [enemies.FallenSoldier('w')]), 	StartTile(),						Corridor(), 									Corridor(barriers = [barriers.WoodenDoor('e')]), 	Corridor(items = [normalChest])]
 	]
 
 	def __init__(self):

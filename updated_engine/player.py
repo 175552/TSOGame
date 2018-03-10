@@ -2,7 +2,7 @@ import items
 
 class Player:
 	def __init__(self):
-		self.inventory = [items.Dagger()]
+		self.inventory = []
 						
 		self.weapon = None
 		
@@ -10,12 +10,12 @@ class Player:
 		
 		self.hp = 50
 		self.max_hp = 100
-		self.damage = 100
+		self.damage = 0
 		self.level = 1	
 		self.exp = 0
 		self.expToLevel = 10
-		self.x = 2
-		self.y = 0
+		self.x = 4
+		self.y = 7
 
 	def print_inventory(self):
 		print("Inventory:")
@@ -144,6 +144,7 @@ class Player:
 							return [True, item.equip_description]
 						else:
 							return [True, "You already have your %s equipped." % item.name]
+			return [True, "You don't have that weapon in your inventory"]
 		elif(verb == 'unequip'):
 			for item in self.inventory:
 				if item.name.lower() == noun1:
