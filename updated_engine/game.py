@@ -48,12 +48,90 @@ def play():
 				if(isinstance(result_text, list)):	# Find out if there is more than one sentence returned.
 					for text in result_text:
 						print_wrap(text)
-						if("Victory is yours!" in text):
-							print_victory_text()
-				else:
-					print_wrap(result_text)
-					if("Victory is yours!" in result_text):
-						print_victory_text()
+					if("sunlight" in text):
+						condition = input("Do you want to know the backstory? ")
+						continue_text(condition)
+						print()
+						print()
+						print()
+						print()
+						print("Neo is a legendary hero in the land of Preyonia. In all of his travels he has never taken a wife, nor has he fancied any women. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("He has heard of a great treasure that can only be won by the bravest, kindest, and strongest of people. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("He decides to win it, and goes to the land of the forgotten king to find it. Through a series of conservations, ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("(which sometimes turned into brawls) Neo learned more about the test. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("The test consisted of three parts: The first part was to pass through the unholy swamp and defeat its Ruler, The Unholy Slime. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("The second part consisted of a warm and cheerful forest. To pass the second test, you had to resist the beautiful and fair maidens of the forest, and instead follow an old beggar, who says, “Give me your most valuable possession and I can lead you to the exit. A hero must have a kind heart to help the beggar, and a strong heart to resist the temptations of the maidens. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("Neo defeated the Unholy Slime and obtained the transformation ring, which can transform into any element or object that you wish. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("During the second test, Neo was pulled away by an especially enchanting maiden, but was brought back to reality when he glimpsed the beggar. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("After speaking with the beggar, Neo, without hesitation, gave the beggar his transformation ring. Once Neo escaped the maidens of the forest, he stumbled across an old man sitting on a bench that seemed to hover in the air, with a huge hole under it. ")
+						goOn = input("Do you want to continue? ")
+						continue_text(goOn)
+						print("Neo though the old man might be part of the third test, and decided to ask him if he was the tester. The old man responded, saying, “To pass the third test you must escape the unholy dungeon of the forgotten king. The entrance is underneath my bench. But be warned: When you enter the dungeon you will lose all memory of your life. When you exit, they will be returned, and you can advance on to the final part of the test, the treasure room. ")
+						print()
+						print("As for the rest, I think you know what happened." )
+						print()
+						print()
+						print()
+					print_victory_text()
+			else:
+				print_wrap(result_text)
+				if("sunlight" in result_text):
+					condition = input("Do you want to know the backstory?  ")
+					continue_text(condition)
+					print()
+					print()
+					print()
+					print()
+					print("Neo is a legendary hero in the land of Preyonia. In all of his travels he has never taken a wife, nor has he fancied any women. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("He has heard of a great treasure that can only be won by the bravest, kindest, and strongest of people. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("He decides to win it, and goes to the land of the forgotten king to find it. Through a series of conservations, ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("(which sometimes turned into brawls) Neo learned more about the test. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("The test consisted of three parts: The first part was to pass through the unholy swamp and defeat its Ruler, The Unholy Slime. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("The second part consisted of a warm and cheerful forest. To pass the second test, you had to resist the beautiful and fair maidens of the forest, and instead follow an old beggar, who says, “Give me your most valuable possession and I can lead you to the exit. A hero must have a kind heart to help the beggar, and a strong heart to resist the temptations of the maidens. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("Neo defeated the Unholy Slime and obtained the transformation ring, which can transform into any element or object that you wish. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("During the second test, Neo was pulled away by an especially enchanting maiden, but was brought back to reality when he glimpsed the beggar. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("After speaking with the beggar, Neo, without hesitation, gave the beggar his transformation ring. Once Neo escaped the maidens of the forest, he stumbled across an old man sitting on a bench that seemed to hover in the air, with a huge hole under it. ")
+					goOn = input("Do you want to continue? ")
+					continue_text(goOn)
+					print("Neo though the old man might be part of the third test, and decided to ask him if he was the tester. The old man responded, saying, “To pass the third test you must escape the unholy dungeon of the forgotten king. The entrance is underneath my bench. But be warned: When you enter the dungeon you will lose all memory of your life. When you exit, they will be returned, and you can advance on to the final part of the test, the treasure room. ")
+					print()
+					print("As for the rest, I think you know what happened." )
+					print()
+					print()
+					print()
+				print_victory_text()
 		else:
 			print("Something seems to have gone wrong. Please try again.")
 			
@@ -242,8 +320,8 @@ def print_welcome_text():
 	
 def print_victory_text():
 	victory_text = ["Thank you for playing!", \
-				"I hope you enjoyed this game engine demo.", \
-				"I look forward to seeing the games you create using this as an example!"]
+				"Made by Joseph Li and Sai Sarnala", \
+				"Watch out for the adventures of Neo, \"The Treasure Room\""]
 				
 	print()
 	print_center("========================================================")
@@ -276,6 +354,12 @@ def level_up():
 		player.max_hp += hpIncrease
 		player.damage += 2
 		print("You have leveled up! You are now level " + str(player.level) + "! Your hp has increased to " + str(player.hp) + ", and your damage has increased to " + str(player.damage) + "!")
-	
+
+def continue_text(text):
+	if("yes" in text.lower()):
+		print()
+	else:
+		print_victory_text()
+
 ### Play the game.
 play()

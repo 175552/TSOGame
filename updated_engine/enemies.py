@@ -116,7 +116,7 @@ class DarkWizard(Enemy):
 
 class BossOgre(Enemy):
 	name = "Ogre"
-	description = "The ogre roars and the stench of rotting flesh fills the air. Standing to it's full height, the ogre is around 13 feet tall."
+	description = "And sitting next to the fire is an ogre, greedily chomping on the leg-bone of a human. The ogre roars and the stench of rotting flesh fills the air. Standing to it's full height, the ogre is around 13 feet tall."
 	hp = 100
 	damage = 20
 	exp = 75
@@ -124,7 +124,7 @@ class BossOgre(Enemy):
 
 class BossSlime(Enemy):
 	name = "Unholy Slime"
-	description = "The slime fixes its beady eyes on your body, giving you a chill through your spine."
+	description = " The slime fixes its beady eyes on your body, giving you a chill through your spine."
 	hp = 150
 	damage = 25
 	exp = 100
@@ -132,8 +132,8 @@ class BossSlime(Enemy):
 
 class BossElf(Enemy):
 	name = "Elf"
-	description = "The elf unsheaths her sword, yelling a defiant battle cry"
-	hp = 100
+	description = "Across from you stands an elf warrior. The elf unsheaths her sword, yelling a defiant battle cry"
+	hp = 120
 	damage = 35
 	exp = 150
 	loot = [items.Ring_Of_Remembrance("The ring of remembrance lies on the ground")]

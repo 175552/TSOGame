@@ -14,7 +14,7 @@ class Player:
 		self.level = 1	
 		self.exp = 0
 		self.expToLevel = 10
-		self.x = 1
+		self.x = 2
 		self.y = 0
 
 	def print_inventory(self):
