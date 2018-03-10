@@ -103,7 +103,7 @@ def play():
 						continue_text(goOn)
 						print("He has heard of a great treasure that can only be won by the bravest, kindest, and strongest of people. ")
 						goOn = input("Do you want to continue? ")
-							continue_text(goOn)
+						continue_text(goOn)
 						print("He decides to win it, and goes to the land of the forgotten king to find it. Through a series of conservations, ")
 						goOn = input("Do you want to continue? ")
 						continue_text(goOn)

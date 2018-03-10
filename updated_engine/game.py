@@ -6,7 +6,7 @@ from world import World
 import parse
 import random
 
-debug_mode = True	# Use this to toggle verbose mode on the text parser.
+debug_mode = False	# Use this to toggle verbose mode on the text parser.
 
 game_name = "The Unholy dungeon of the forgotten King!"
 
